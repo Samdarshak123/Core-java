@@ -1,0 +1,476 @@
+package MyDB;
+import java.sql.*;
+import java.util.*;
+
+
+
+import java.util.*;
+class ProfessorCRUD {
+	 
+
+	public void Profeesorinsert() throws Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		String pname, pemailid, pmobile;
+		int pid;
+		
+	    System.out.println("Enter your name");
+	    pname=sc.next();
+
+	    System.out.println("Enter your email");
+	    pemailid=sc.next();
+	    
+	    System.out.println("Enter your mobile");
+	    pmobile=sc.next();
+
+
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+	    Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+	    
+	    String q="insert into professor(Pname,PemailID,Pmobile)values('"+pname+"','"+pemailid+"','"+pmobile+"')";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    int row=psmt.executeUpdate();
+	    if(row>0)
+	    {
+	    	System.out.println("save Success");
+	    	
+	    }
+	    else
+	    {
+	    	
+	    	System.out.println("oops");
+	    }
+		
+	}
+
+
+
+
+
+	public void Professorshow()throws Exception
+	{
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	    
+	    Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+	    
+	    String q="select *from Professor";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    ResultSet rs=psmt.executeQuery();
+	    
+	    while(rs.next())
+	    {
+	    	System.out.println("professor ID "+rs.getInt("PID"));
+	    	System.out.println("professor Name "+rs.getString("Pname"));
+	        System.out.println("professor Contact "+rs.getString("Pmobile"));
+	    	System.out.println("professor Email "+rs.getString("PemailID"));
+	     }
+	    
+	  }
+		
+
+
+
+
+
+	public void Professordelete()throws Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		
+		int id;
+		
+		System.out.println("Enter your id");
+		id=sc.nextInt();
+		
+	    
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+		String q="delete from professor where PID='"+id+"' ";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    
+	    int row=psmt.executeUpdate();
+	    if(row>0)
+	    {
+	    	System.out.println("delete Success");
+	    	
+	    }
+	    else
+	    {
+	    	
+	    	System.out.println("oops");
+	    }
+		
+	}
+
+
+
+
+	public void Professorupdate()throws Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		String pname;
+		int pid;
+
+		
+	    System.out.println("Enter your id");
+	    pid=sc.nextInt();
+
+	    System.out.println("Enter your name");
+	    pname=sc.next();
+	    
+	   
+		
+	    
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+		
+		String q="update professor set Pname='"+pname+"' where PID='"+pid+"' ";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    
+	    int row=psmt.executeUpdate();
+	    if(row>0)
+	    {
+	    	System.out.println("save Success");
+	    	
+	    }
+	    else
+	    {
+	    	
+	    	System.out.println("oops");
+	    }
+
+	}
+
+	public void ProfessorSearching() throws Exception
+	{
+	Scanner sc=new Scanner (System.in);
+
+	String pname;
+
+	System.out.println("Enter your name");
+	pname=sc.next();
+
+	Class.forName("com.mysql.cj.jdbc.Driver");
+
+	Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+
+	String q="select *from professor where Pname like '%"+ pname+"%'";
+
+	PreparedStatement psmt=conn.prepareStatement(q);
+
+	ResultSet rs=psmt.executeQuery();
+
+	while(rs.next())
+	{
+		System.out.println("Professor ID"+rs.getInt("Pid"));
+		System.out.println("Professor Name"+rs.getString("Pname"));
+		
+		System.out.println("Professor Mobile"+rs.getString("Pmobile"));
+		System.out.println("Professor Email"+rs.getString("PemailID"));
+	}
+
+	}
+	
+	public void Professorlogin()throws Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		String pname,email;
+		
+		System.out.println("Enter your Username ");
+		pname=sc.next();
+		System.out.println("Enter your email");
+		email=sc.next();
+		
+        Class.forName("com.mysql.cj.jdbc.Driver");
+		
+        Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+        
+        String q="select * from login where Pname='"+pname+"'AND PemailID='"+email+"'";
+        
+        PreparedStatement psmt=conn.prepareStatement(q);
+        
+        ResultSet rs=psmt.executeQuery();
+        
+        if(rs.next())
+        {
+        	System.out.println("Login Sucess");
+        	Show S=new Show();
+        }
+        
+        else
+        {
+        	System.out.println("Wrong Login");
+        }
+        
+		
+
+	}
+
+class Detailstudent {
+
+	public void Studentinsert() throws Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		String sname, semail, scontact,scourse;
+		
+	    System.out.println("Enter your name");
+	    sname=sc.next();
+        
+	    System.out.println("Enter your email");
+	    semail=sc.next();
+	    
+	    System.out.println("Enter your contact");
+	    scontact=sc.next();
+	    
+	    System.out.println("Enter your course");
+	    scourse=sc.next();
+
+
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+	    Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+	    
+	    String q="insert into student(Sname,Semailid,Smobileno,Scourse)values('"+sname+"','"+semail+"','"+scontact+"','"+scourse+"')";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    int row=psmt.executeUpdate();
+	    if(row>0)
+	    {
+	    	System.out.println("save Success");
+	    	
+	    }
+	    else
+	    {
+	    	
+	    	System.out.println("oops");
+	    }
+		
+	}
+
+
+
+
+
+	public void Studentshow()throws Exception
+	{
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	    
+	    Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagment","root","");
+	    
+	    String q="select *from student";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    ResultSet rs=psmt.executeQuery();
+	    
+	    while(rs.next())
+	    {
+	    	System.out.println("Student ID"+rs.getInt("Sid"));
+	    	System.out.println("Student Name"+rs.getString("Sname"));
+	    	System.out.println("Student course"+rs.getString("Scourse"));
+	    	System.out.println("Student Contact"+rs.getString("Smobileno"));
+	    	System.out.println("Student Email"+rs.getString("Semail"));
+	    }
+	    
+		}
+		
+
+
+
+
+
+	public void Studentdelete()throws Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		
+		int sid;
+		
+		System.out.println("Enter your ID number");
+		sid=sc.nextInt();
+		
+	    
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+		String q="delete from Student where Sid='"+sid+"' ";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    
+	    int row=psmt.executeUpdate();
+	    if(row>0)
+	    {
+	    	System.out.println("Delete Success");
+	    	
+	    }
+	    else
+	    {
+	    	
+	    	System.out.println("oops");
+	    }
+		
+	}
+
+
+
+
+	public void Studentupdate()throws Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		String sname;
+		int roll;
+
+		
+	    System.out.println("Enter your rollnumber");
+	    roll=sc.nextInt();
+
+	    System.out.println("Enter your name");
+	    sname=sc.next();
+	    
+	   
+		
+	    
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+		
+		String q="update student set Sname='"+sname+"' where Sid='"+roll+"' ";
+	    
+	    PreparedStatement psmt=conn.prepareStatement(q);
+	    
+	    
+	    int row=psmt.executeUpdate();
+	    if(row>0)
+	    {
+	    	System.out.println("save Success");
+	    	
+	    }
+	    else
+	    {
+	    	
+	    	System.out.println("oops");
+	    }
+
+	}
+
+	public void StudentSearching() throws Exception
+	{
+	Scanner sc=new Scanner (System.in);
+
+	String sname;
+
+	System.out.println("Enter your name");
+	sname=sc.next();
+
+	Class.forName("com.mysql.cj.jdbc.Driver");
+
+	Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/collegemanagement","root","");
+
+	String q="select *from student where Sname like '%"+ sname+"%'";
+
+	PreparedStatement psmt=conn.prepareStatement(q);
+
+	ResultSet rs=psmt.executeQuery();
+
+	while(rs.next())
+	{
+		System.out.println("Student ID"+rs.getInt("Sid"));
+		System.out.println("Student Name"+rs.getString("Sname"));
+	    System.out.println("Student Contact"+rs.getString("Smobileno"));
+		System.out.println("Student Email"+rs.getString("Semailid"));
+		System.out.println("Student courses"+rs.getString("Scourse"));
+	}
+
+	}
+
+}
+
+class Mechanical
+{
+	String year;
+	
+	long fee;
+	public Mechanical(String year, long fee)
+	{
+		this.year=year;
+		
+		this.fee=fee;
+	}
+}
+
+class Civil
+{
+	String year;
+	
+	long fee;
+	public Civil(String year, long fee)
+	{
+		this.year=year;
+		
+		this.fee=fee;
+	}
+}
+
+class Computer
+
+{
+	String year;
+	
+	long fee;
+	public Computer(String year, long fee)
+	{
+		this.year=year;
+		
+		this.fee=fee;
+	}
+}
+class IT
+{
+	String year;
+	
+	long fee;
+	public IT(String year, long fee)
+	{
+		this.year=year;
+		
+		this.fee=fee;
+	}
+}
+
+class Electrical
+{
+	String year;
+	
+	long fee;
+	public Electrical(String year, long fee)
+	{
+		this.year=year;
+		
+		this.fee=fee;
+	}
+}
+class Electronics
+{
+	String year;
+	
+	long fee;
+	public Electronics(String year, long fee)
+	{
+		this.year=year;
+		
+		this.fee=fee;
+	}
+}
